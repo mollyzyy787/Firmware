@@ -52,6 +52,7 @@ using namespace aa241x_high;
 
 // define global variables (can be seen by all files in aa241x_high directory unless static keyword used)
 float altitude_desired = 0.0f;
+float ground_speed_desired = 10.0f;
 
 /**
  * Main function in which your code should be written.
@@ -61,8 +62,6 @@ float altitude_desired = 0.0f;
  * the code you'd like executed on a loop is in this function.
  */
 void flight_control() {
-
-	float my_float_variable = 0.0f;		/**< example float variable */
 
 
 	// An example of how to run a one time 'setup' for example to lock one's altitude and heading...
@@ -89,7 +88,7 @@ void flight_control() {
 	roll_desired = 0.0f; // roll_desired already exists in aa241x_high_aux so no need to repeat float declaration
 
 	// Now use your parameter gain and multiply by the error from desired
-	float proportionalRollCorrection = aah_parameters.proportional_roll_gain * (roll - roll_desired);
+	float proportionalRollCorrection = aah_parameters.proportional_roll_gain * (roll_desired - roll);
 
 	// Note the use of x.0f, this is important to specify that these are single and not double float values!
 
@@ -107,7 +106,33 @@ void flight_control() {
 	// Set output of roll servo to the control law output calculated above
 	roll_servo_out = proportionalRollCorrection;		
 	// as an example, just passing through manual control to everything but roll
-	pitch_servo_out = -man_pitch_in;
-	yaw_servo_out = man_yaw_in;
-	throttle_servo_out = man_throttle_in;
+	//pitch_servo_out = -man_pitch_in;
+	//yaw_servo_out = man_yaw_in;
+	//throttle_servo_out = man_throttle_in;
+	
+	// Make an altitude/speed hold controller
+	float proportionalSpeedCorrection = aah_parameters.proportional_throttle_gain *(ground_speed_desired - ground_speed);
+	
+	if (proportionalSpeedCorrection > 1.0f) {
+		proportionalSpeedCorrection = 1.0f;
+	} else if (proportionalSpeedCorrection < 0.0f ) {
+		proportionalSpeedCorrection = 0.0f;
+	}
+	
+	pitch_desired = aah_parameters.proportional_altiude_gain*(altitude_desired - position_D_baro);
+	
+	float proportionalPitchCorrection = aah_parameters.proportional_pitch_gain *(pitch_desired - pitch);
+	
+	throttle_servo_out = proportionalSpeedCorrection;
+	pitch_servo_out = proportionalPitchCorrection;
+	
+	if (proportionalPitchCorrection > 1.0f) {
+		proportionalPitchCorrection = 1.0f;
+	} else if (proportionalPitchCorrection < -1.0f ) {
+		proportionalPitchCorrection = -1.0f;
+	}
+	
+		
 }
+
+
