@@ -75,6 +75,9 @@ PARAM_DEFINE_FLOAT(AAH_PROPROLLGAIN, 1.0f);
 
 // TODO: define custom parameters here
 
+PARAM_DEFINE_FLOAT(AAH_PROPPITCHGAIN, 1.0f);
+PARAM_DEFINE_FLOAT(AAH_PROPTHROTTLEGAIN, 1.0f);
+PARAM_DEFINE_FLOAT(AAH_PROPALTITUDEGAIN, 1.0f);
 
 int aah_parameters_init(struct aah_param_handles *h)
 {
@@ -88,7 +91,9 @@ int aah_parameters_init(struct aah_param_handles *h)
 	 */
 	h->example_high_param		= param_find("AAH_EXAMPLE");
 	h->proportional_roll_gain 	= param_find("AAH_PROPROLLGAIN");
-
+        h->proportional_pitch_gain 	= param_find("AAH_PROPPTICHGAIN");
+	h->proportional_throttle_gain 	= param_find("AAH_PROPTHROTTLEGAIN");
+	h->proportional_altitude_gain 	= param_find("AAH_PROPALTITUDEGAIN");
 	// TODO: add the above line for each of your custom parameters........
 
 	return OK;
@@ -101,6 +106,10 @@ int aah_parameters_update(const struct aah_param_handles *h, struct aah_params *
 	// the corresponding variable name
 	param_get(h->example_high_param, &(p->example_high_param));
 	param_get(h->proportional_roll_gain, &(p->proportional_roll_gain));
+	param_get(h->proportional_pitch_gain, &(p->proportional_pitch_gain));
+	param_get(h->proportional_throttle_gain, &(p->proportional_throttle_gain));
+	param_get(h->proportional_altitude_gain, &(p->proportional_altitude_gain));
+	
 
 	// TODO: add the above line for each of your custom parameters.....
 
