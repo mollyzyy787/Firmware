@@ -62,6 +62,9 @@ struct aah_params {
 
 	float example_high_param;
 	float proportional_roll_gain;
+	float proportional_pitch_gain;
+	float proportional_throttle_gain;
+	float proportional_altitude_gain;
 
 	// TODO: add custom parameter variable names here......
 
