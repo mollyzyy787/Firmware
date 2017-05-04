@@ -84,6 +84,9 @@ struct aah_param_handles {
 
 	param_t example_high_param;
 	param_t proportional_roll_gain;
+	param_t proportional_pitch_gain;
+	param_t proportional_throttle_gain;
+	param_t proportional_altitude_gain;
 
 	// TODO: add custom parameter variable names here.......
 
